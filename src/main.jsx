@@ -1,44 +1,63 @@
-import React from "react";
-import { StrictMode } from 'react';
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import { createRoot } from 'react-dom/client';
-import { createBrowserRouter,RouterProvider } from 'react-router-dom';
-import HomePage from "./Pages/HomePage";
-import Signup from './Pages/Auth/Signup';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import App from "./App";
-import Layout from "./Layout/Layout"
 import "./index.css";
+
+import Layout from "./Layout/Layout";
+
+import HomePage from "./Pages/HomePage";
+
 import Login from "./Pages/Auth/Login";
+import Signup from "./Pages/Auth/Signup";
+
+import GenerateQuizPage from "./Pages/QuizPages/GenerateQuizPage";
+import SubjectPage from "./Pages/QuizPages/SubjectPage";
+
 import { AuthProvider } from "./Context/AuthContext";
+import QuizAttemptPage from "./Pages/QuizPages/QuizAttemptPage";
 
-const router=createBrowserRouter([
+const router = createBrowserRouter([
   {
-    path:"/",
-    element:<Layout/>,
-    children:[
+    path: "/",
+    element: <Layout />,
+    children: [
       {
-        path:"",
-        element:<HomePage/>
+        index: true,
+        element: <HomePage />,
       },
-      {
-        path:"/user/login",
-        element:<Login/>
-      },
-      {
-        path:"/user/signup",
-        element:<Signup/>
-      },]
-  }
-]
-)
 
-createRoot(document.getElementById('root')).render(
-  
+      {
+        path: "user/login",
+        element: <Login />,
+      },
+
+      {
+        path: "user/signup",
+        element: <Signup />,
+      },
+
+      {
+        path: "all-quizzes",
+        element: <GenerateQuizPage />,
+      },
+
+      {
+        path: "subjects/:slug",
+        element: <SubjectPage />,
+      },
+      {
+        path: "subjects/attempt/:quizId",
+        element: <QuizAttemptPage />,
+      },
+    ],
+  },
+]);
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-    <RouterProvider router={router} />
-     </AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
-)
+);

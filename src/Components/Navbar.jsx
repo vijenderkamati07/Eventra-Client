@@ -17,7 +17,7 @@ const guestNavItems = [
   },
   {
     name: "Generate Quiz",
-    path: "/generate-quiz",
+    path: "/all-quizzes",
   },
   {
     name: "Adaptive Practice",
@@ -32,7 +32,7 @@ const userNavItems = [
   },
   {
     name: "Generate Quiz",
-    path: "/generate-quiz",
+    path: "/all-quizzes",
   },
   {
     name: "Adaptive Practice",
