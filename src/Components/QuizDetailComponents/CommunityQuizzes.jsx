@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const CommunityQuizzes = ({
   quizzes = [],
+  onGenerateQuiz
 }) => {
   const previewQuizzes = quizzes.slice(
     0,
@@ -136,6 +137,7 @@ const CommunityQuizzes = ({
             </p>
 
             <button
+             onClick={onGenerateQuiz}
               className="
                 mt-8
                 inline-flex

@@ -6,6 +6,7 @@ import {
 
 const PopularTopics = ({
   subtopics = [],
+   onGenerateQuiz
 }) => {
   const normalizedTopics = subtopics
     .map((topic) => {
@@ -91,6 +92,7 @@ const PopularTopics = ({
         </p>
 
         <button
+         onClick={onGenerateQuiz}
           className="
             mt-8
             inline-flex

@@ -27,8 +27,8 @@ const guestNavItems = [
 
 const userNavItems = [
   {
-    name: "Dashboard",
-    path: "/dashboard",
+    name: "Home",
+    path: "/",
   },
   {
     name: "Generate Quiz",
@@ -40,7 +40,7 @@ const userNavItems = [
   },
   {
     name: "History",
-    path: "/history",
+    path: "/submittion/history",
   },
 ];
 

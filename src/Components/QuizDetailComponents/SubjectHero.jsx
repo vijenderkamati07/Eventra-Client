@@ -1,6 +1,6 @@
 import { Brain, Sparkles, TrendingUp } from "lucide-react";
 
-const SubjectHero = ({ subject }) => {
+const SubjectHero = ({ subject, onGenerateQuiz }) => {
   const subjectName = subject?.name || "Subject";
 
   const description =
@@ -208,6 +208,7 @@ const SubjectHero = ({ subject }) => {
           "
         >
           <button
+          onClick={onGenerateQuiz}
             className="
               cursor-pointer
               rounded-full

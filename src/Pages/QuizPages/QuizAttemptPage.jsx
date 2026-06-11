@@ -172,7 +172,7 @@ const QuizAttemptPage = () => {
 
       if (res.success) {
         navigate(
-          `/results/${quizId}`
+          `/results/${res.data.submittionId}`
         );
 
         return;

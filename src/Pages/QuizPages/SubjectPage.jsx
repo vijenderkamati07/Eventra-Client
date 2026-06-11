@@ -1,4 +1,8 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useParams } from "react-router-dom";
 
 import SubjectHero from "../../Components/QuizDetailComponents/SubjectHero";
@@ -7,62 +11,103 @@ import PopularTopics from "../../Components/QuizDetailComponents/PopularTopics";
 import CommunityQuizzes from "../../Components/QuizDetailComponents/CommunityQuizzes";
 import LearningInsights from "../../Components/QuizDetailComponents/LearningInsights";
 import QuickGenerate from "../../Components/QuizDetailComponents/QuickGenerate";
-import AICoachFeedback from "../../Components/QuizDetailComponents/AICoachFeedback"
+import AICoachFeedback from "../../Components/QuizDetailComponents/AICoachFeedback";
 
 import { findOneSubject } from "../../Services/quizService";
 
 const SubjectPage = () => {
   const { slug } = useParams();
 
-  const [subject, setSubject] = useState(null);
-  const [attempts, setAttempts] = useState([]);
-  const [communityQuizzes, setCommunityQuizzes] = useState([]);
+  const [subject, setSubject] =
+    useState(null);
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [attempts, setAttempts] =
+    useState([]);
+
+  const [
+    communityQuizzes,
+    setCommunityQuizzes,
+  ] = useState([]);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  // Quick Generate Scroll Ref
+  const quickGenerateRef =
+    useRef(null);
 
   useEffect(() => {
     fetchSubjectData();
   }, [slug]);
 
-  const fetchSubjectData = async () => {
-    try {
-      setLoading(true);
-      setError("");
+  const fetchSubjectData =
+    async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-      const subjectResponse = await findOneSubject(slug);
+        const subjectResponse =
+          await findOneSubject(
+            slug
+          );
 
-      if (!subjectResponse.success) {
-        setError(
-          subjectResponse.errors?.[0] ||
-            "Failed to load subject."
+        if (
+          !subjectResponse.success
+        ) {
+          setError(
+            subjectResponse
+              .errors?.[0] ||
+              "Failed to load subject."
+          );
+
+          return;
+        }
+
+        setSubject(
+          subjectResponse.data
+            .subject
         );
 
-        return;
+        setAttempts(
+          subjectResponse.data
+            .attempt || []
+        );
+
+        setCommunityQuizzes(
+          subjectResponse.data
+            .communityQuizzes ||
+            []
+        );
+      } catch {
+        setError(
+          "Something went wrong while loading this subject."
+        );
+      } finally {
+        setLoading(false);
       }
+    };
 
-      setSubject(
-        subjectResponse.data.subject
-      );
+  const scrollToGenerate =
+    () => {
+      const element =
+        quickGenerateRef.current;
 
-      setAttempts(
-        subjectResponse.data.attempt || []
-      );
+      if (!element) return;
 
-      setCommunityQuizzes(
-        subjectResponse.data
-          .communityQuizzes || []
-      );
-    } catch {
-      setError(
-        "Something went wrong while loading this subject."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+      const y =
+        element.getBoundingClientRect()
+          .top +
+        window.pageYOffset -
+        100;
 
-  return (
+      window.scrollTo({
+        top: y,
+        behavior: "smooth",
+      });
+    };  return (
     <div className="min-h-screen bg-[#08090A] text-white">
       {/* Background Glow */}
       <div
@@ -169,7 +214,9 @@ const SubjectPage = () => {
               </p>
 
               <button
-                onClick={fetchSubjectData}
+                onClick={
+                  fetchSubjectData
+                }
                 className="
                   mt-8
                   cursor-pointer
@@ -191,54 +238,88 @@ const SubjectPage = () => {
           </div>
         ) : (
           <div className="space-y-8">
-  {/* Hero */}
-  <SubjectHero subject={subject} />
+            {/* Hero */}
+            <SubjectHero
+              subject={subject}
+              onGenerateQuiz={
+                scrollToGenerate
+              }
+            />
 
-  {/* Continue Learning */}
-  {attempts.length > 0 && (
-    <ContinueLearning attempts={attempts} />
-  )}
+            {/* Continue Learning */}
+            {attempts.length > 0 && (
+              <ContinueLearning
+                attempts={
+                  attempts
+                }
+              />
+            )}
 
-  {/* Community + Topics */}
-<div
-  className="
-    grid
-    gap-8
-    lg:grid-cols-3
-  "
->
-  {/* Community */}
-  <div className="lg:col-span-2">
-    <CommunityQuizzes
-      quizzes={communityQuizzes}
-    />
-  </div>
+            {/* Community + Topics */}
+            <div
+              className="
+                grid
+                gap-8
+                lg:grid-cols-3
+              "
+            >
+              {/* Community */}
+              <div className="lg:col-span-2">
+                <CommunityQuizzes
+                  quizzes={
+                    communityQuizzes
+                  }
+                  onGenerateQuiz={
+                    scrollToGenerate
+                  }
+                />
+              </div>
 
-  {/* Topics */}
-  <div>
-    <PopularTopics
-      subtopics={subject?.subtopics || []}
-    />
-  </div>
-</div>
+              {/* Topics */}
+              <div>
+                <PopularTopics
+                  subtopics={
+                    subject?.subtopics ||
+                    []
+                  }
+                  onGenerateQuiz={
+                    scrollToGenerate
+                  }
+                />
+              </div>
+            </div>
 
-  {/* Generate Quiz */}
-  <QuickGenerate subject={subject} />
+            {/* Generate Quiz */}
+            <div
+              ref={
+                quickGenerateRef
+              }
+            >
+              <QuickGenerate
+                subject={subject}
+              />
+            </div>
 
-  {/* Learning Insights */}
-  {attempts.length > 0 && (
-    <LearningInsights
-      attempts={attempts}
-    />
-  )}
+            {/* Learning Insights */}
+            {attempts.length >
+              0 && (
+              <LearningInsights
+                attempts={
+                  attempts
+                }
+              />
+            )}
 
-  {/* AI Coach Feedback */}
-  {attempts.length > 0 && (
-    <AICoachFeedback
-      attempts={attempts}
-    />
-  )}
-</div>
+            {/* AI Coach Feedback */}
+            {attempts.length >
+              0 && (
+              <AICoachFeedback
+                attempts={
+                  attempts
+                }
+              />
+            )}
+          </div>
         )}
       </div>
     </div>

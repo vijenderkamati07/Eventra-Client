@@ -1,12 +1,26 @@
 import { Sparkles, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { generateCustomQuiz } from "../../Services/quizService";
 
 const QuickGenerate = ({ subject }) => {
+  const navigate = useNavigate();
+
+  const [title, setTitle] = useState(
+    `${subject?.name || "Custom"} Quiz`
+  );
+
   const [difficulty, setDifficulty] =
-    useState("adaptive");
+    useState("easy");
 
   const [questionCount, setQuestionCount] =
     useState(10);
+
+  const [isGenerating, setIsGenerating] =
+    useState(false);
+
+  const [generatedQuiz, setGeneratedQuiz] =
+    useState(null);
 
   const difficulties = [
     {
@@ -34,26 +48,47 @@ const QuickGenerate = ({ subject }) => {
     30,
   ];
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!subject?.slug) return;
 
-    /*
-      Later:
+    try {
+      setIsGenerating(true);
 
-      navigate("/quiz/generate", {
-        state: {
-          subject: subject.slug,
-          difficulty,
-          questionCount,
-        },
-      });
-    */
+      const payload = {
+        topic: subject.name,
+        title: title.trim(),
+        difficulty,
+        questionCount,
+      };
 
-    console.log({
-      subject: subject.slug,
-      difficulty,
-      questionCount,
-    });
+      const res =
+        await generateCustomQuiz(
+          payload
+        );
+
+      if (res.success) {
+        setGeneratedQuiz({
+          id: res.data.quizId,
+          message:
+            res.message ||
+            "Quiz generated successfully.",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleStartQuiz = () => {
+    if (!generatedQuiz) return;
+
+    navigate(
+      `/subjects/attempt/${generatedQuiz.id}`
+    );
+
+    setGeneratedQuiz(null);
   };
 
   return (
@@ -102,7 +137,6 @@ const QuickGenerate = ({ subject }) => {
           "
         >
           <Sparkles size={14} />
-
           Generate Quiz
         </span>
 
@@ -132,7 +166,41 @@ const QuickGenerate = ({ subject }) => {
           number of questions.
         </p>
 
-        {/* Difficulty */}
+        {/* Title */}
+        <div className="mt-10">
+          <p
+            className="
+              text-sm
+              font-medium
+              text-[#D1D5DB]
+            "
+          >
+            Quiz Title
+          </p>
+
+          <input
+            type="text"
+            value={title}
+            onChange={(e) =>
+              setTitle(e.target.value)
+            }
+            placeholder="Enter quiz title"
+            className="
+              mt-4
+              w-full
+              rounded-2xl
+              border
+              border-white/[0.06]
+              bg-white/[0.03]
+              px-5
+              py-3
+              text-white
+              outline-none
+              placeholder:text-[#8A8F98]
+              focus:border-white/[0.12]
+            "
+          />
+        </div>        {/* Difficulty */}
         <div className="mt-10">
           <p
             className="
@@ -284,9 +352,19 @@ const QuickGenerate = ({ subject }) => {
                   font-semibold
                 "
               >
-                {subject?.name || "Custom"}
-                {" • "}
-                {difficulty.charAt(0).toUpperCase() +
+                {title}
+              </p>
+
+              <p
+                className="
+                  mt-2
+                  text-sm
+                  text-[#8A8F98]
+                "
+              >
+                {difficulty
+                  .charAt(0)
+                  .toUpperCase() +
                   difficulty.slice(1)}
                 {" • "}
                 {questionCount} Questions
@@ -295,7 +373,11 @@ const QuickGenerate = ({ subject }) => {
 
             <button
               onClick={handleGenerate}
-              disabled={!subject?.slug}
+              disabled={
+                !subject?.slug ||
+                !title.trim() ||
+                isGenerating
+              }
               className="
                 inline-flex
                 cursor-pointer
@@ -318,11 +400,125 @@ const QuickGenerate = ({ subject }) => {
             >
               <Zap size={18} />
 
-              Generate Quiz
+              {isGenerating
+                ? "Generating..."
+                : "Generate Quiz"}
             </button>
           </div>
         </div>
       </div>
+
+      {/* Success Popup */}
+      {generatedQuiz && (
+        <div
+          className="
+            fixed
+            inset-0
+            z-50
+            flex
+            items-center
+            justify-center
+            bg-black/60
+            backdrop-blur-sm
+            px-4
+          "
+        >
+          <div
+            className="
+              w-full
+              max-w-md
+              rounded-3xl
+              border
+              border-white/[0.06]
+              bg-[#0C0D0F]
+              p-6
+            "
+          >
+            <div
+              className="
+                inline-flex
+                rounded-full
+                bg-emerald-500/10
+                px-3
+                py-2
+                text-emerald-300
+              "
+            >
+              <Sparkles size={18} />
+            </div>
+
+            <h3
+              className="
+                mt-5
+                text-2xl
+                font-semibold
+                text-white
+              "
+            >
+              Quiz Generated 🎉
+            </h3>
+
+            <p
+              className="
+                mt-3
+                leading-7
+                text-[#8A8F98]
+              "
+            >
+              {
+                generatedQuiz.message
+              }
+            </p>
+
+            <div
+              className="
+                mt-8
+                flex
+                justify-end
+                gap-3
+              "
+            >
+              <button
+                onClick={() =>
+                  setGeneratedQuiz(
+                    null
+                  )
+                }
+                className="
+                  cursor-pointer
+                  rounded-xl
+                  border
+                  border-white/[0.06]
+                  px-4
+                  py-2
+                  text-[#8A8F98]
+                  hover:bg-white/[0.03]
+                "
+              >
+                Later
+              </button>
+
+              <button
+                onClick={
+                  handleStartQuiz
+                }
+                className="
+                  cursor-pointer
+                  rounded-xl
+                  bg-white
+                  px-4
+                  py-2
+                  font-medium
+                  text-black
+                  hover:bg-white/90
+                "
+              >
+                Start Quiz
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

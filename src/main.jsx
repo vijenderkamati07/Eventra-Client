@@ -6,7 +6,7 @@ import "./index.css";
 
 import Layout from "./Layout/Layout";
 
-import HomePage from "./Pages/HomePage";
+import HomePage from "./Pages/Home/HomePage";
 
 import Login from "./Pages/Auth/Login";
 import Signup from "./Pages/Auth/Signup";
@@ -16,6 +16,8 @@ import SubjectPage from "./Pages/QuizPages/SubjectPage";
 
 import { AuthProvider } from "./Context/AuthContext";
 import QuizAttemptPage from "./Pages/QuizPages/QuizAttemptPage";
+import QuizResultPage from "./Pages/QuizPages/QuizResultPage";
+import HistoryPage from "./Pages/History/HistoryPage";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +51,14 @@ const router = createBrowserRouter([
       {
         path: "subjects/attempt/:quizId",
         element: <QuizAttemptPage />,
+      },
+      {
+        path: "/results/:quizId",
+        element: <QuizResultPage />,
+      },
+      {
+        path: "/submittion/history",
+        element: <HistoryPage />,
       },
     ],
   },
