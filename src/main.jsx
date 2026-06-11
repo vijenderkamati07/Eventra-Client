@@ -18,6 +18,7 @@ import { AuthProvider } from "./Context/AuthContext";
 import QuizAttemptPage from "./Pages/QuizPages/QuizAttemptPage";
 import QuizResultPage from "./Pages/QuizPages/QuizResultPage";
 import HistoryPage from "./Pages/History/HistoryPage";
+import AdaptivePracticePage from "./Pages/AdaptiveLearning/AdaptivePracticePage";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "/submittion/history",
         element: <HistoryPage />,
+      },
+      {
+        path: "/show/adaptive-learning",
+        element: <AdaptivePracticePage />,
       },
     ],
   },

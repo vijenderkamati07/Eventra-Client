@@ -36,7 +36,7 @@ const userNavItems = [
   },
   {
     name: "Adaptive Practice",
-    path: "/adaptive-quiz",
+    path: "/show/adaptive-learning",
   },
   {
     name: "History",
