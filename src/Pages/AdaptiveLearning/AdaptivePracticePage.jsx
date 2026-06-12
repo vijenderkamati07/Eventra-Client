@@ -390,9 +390,126 @@ export default function AdaptivePracticePage() {
 
         <AdaptiveComparison />
 
-        {/* Adaptive Philosophy Quote */}
-        {/* Adaptive Philosophy Quote */}
-<section className="pb-32 pt-8">
+        {/* Footer CTA */}
+<section className="pb-20 mb-20 mt-15">
+  <div
+    className="
+      flex
+      flex-col
+      gap-8
+      lg:flex-row
+      lg:items-center
+      lg:justify-between
+    "
+  >
+    {/* Content */}
+    <div className="max-w-2xl">
+      <p
+        className="
+          text-sm
+          uppercase
+          tracking-[0.3em]
+          text-violet-300
+        "
+      >
+        Ready To Begin?
+      </p>
+
+      <h2
+        className="
+          mt-3
+          text-3xl
+          font-bold
+          tracking-tight
+          md:text-5xl
+        "
+      >
+        Learn Smarter.
+        <br />
+        Practice With Purpose.
+      </h2>
+
+      <p
+        className="
+          mt-4
+          max-w-xl
+          text-lg
+          leading-relaxed
+          text-[#8A8F98]
+        "
+      >
+        Eventra helps you focus on what
+        matters most and guides your next
+        learning step with confidence.
+      </p>
+    </div>
+
+    {/* Actions */}
+    <div
+      className="
+        flex
+        flex-wrap
+        items-center
+        gap-4
+        lg:flex-nowrap
+      "
+    >
+      <button
+        onClick={() => {
+          if (isLoggedIn) {
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          } else {
+            navigate("/user/signup");
+          }
+        }}
+        className="
+          cursor-pointer
+          rounded-full
+          bg-white
+          px-8
+          py-4
+          font-medium
+          text-black
+          whitespace-nowrap
+          transition-all
+          duration-300
+          hover:-translate-y-1
+          hover:bg-white/90
+        "
+      >
+        {isLoggedIn
+          ? "Explore Adaptive Learning"
+          : "Start Learning Free"}
+      </button>
+
+      <button
+        onClick={() => navigate("/all-quizzes")}
+        className="
+          cursor-pointer
+          rounded-full
+          border
+          border-white/10
+          bg-white/[0.03]
+          px-8
+          py-4
+          font-medium
+          text-white
+          whitespace-nowrap
+          transition-all
+          duration-300
+          hover:-translate-y-1
+          hover:bg-white/[0.06]
+        "
+      >
+        Continue Learning
+      </button>
+    </div>
+  </div>
+</section>
+<section className="pb-26 pt-8 mt-36">
   <div className="relative overflow-hidden text-center">
     <div className="relative z-10 max-w-6xl mx-auto">
       {/* Decorative Quotes */}
@@ -490,125 +607,7 @@ export default function AdaptivePracticePage() {
   </div>
 </section>
 
-        {/* Footer CTA */}
-        <section className="pb-20">
-          <div
-            className="
-              rounded-[40px]
-              border
-              border-white/[0.06]
-              bg-[#0C0D0F]
-              px-8
-              py-12
-              md:px-12
-            "
-          >
-            <div
-              className="
-                flex
-                flex-col
-                gap-10
-                lg:flex-row
-                lg:items-center
-                lg:justify-between
-              "
-            >
-              <div className="max-w-2xl">
-                <p
-                  className="
-                    text-sm
-                    uppercase
-                    tracking-[0.3em]
-                    text-violet-300
-                  "
-                >
-                  Ready To Begin?
-                </p>
-
-                <h2
-                  className="
-                    mt-4
-                    text-3xl
-                    font-bold
-                    tracking-tight
-                    md:text-4xl
-                  "
-                >
-                  Stop Studying Harder.
-                  <br />
-                  Start Learning Smarter.
-                </h2>
-
-                <p
-                  className="
-                    mt-5
-                    leading-relaxed
-                    text-[#8A8F98]
-                  "
-                >
-                  You don't have to figure everything
-                  out yourself. Eventra helps you
-                  understand what to improve next and
-                  guides your learning with confidence.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-4">
-                <button
-                  onClick={() => {
-                    if (isLoggedIn) {
-                      window.scrollTo({
-                        top: 0,
-                        behavior: "smooth",
-                      });
-                    } else {
-                      navigate("/user/signup");
-                    }
-                  }}
-                  className="
-                    cursor-pointer
-                    rounded-full
-                    bg-white
-                    px-8
-                    py-4
-                    font-medium
-                    text-black
-                    transition-all
-                    duration-300
-                    hover:-translate-y-1
-                    hover:bg-white/90
-                  "
-                >
-                  {isLoggedIn
-                    ? "Explore Adaptive Learning"
-                    : "Start Learning Free"}
-                </button>
-
-                <button
-                  onClick={() =>
-                    navigate("/all-quizzes")
-                  }
-                  className="
-                    cursor-pointer
-                    rounded-full
-                    border
-                    border-white/10
-                    bg-white/[0.03]
-                    px-8
-                    py-4
-                    font-medium
-                    transition-all
-                    duration-300
-                    hover:-translate-y-1
-                    hover:bg-white/[0.06]
-                  "
-                >
-                  Continue Learning
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
+        
       </div>
     </div>
   );

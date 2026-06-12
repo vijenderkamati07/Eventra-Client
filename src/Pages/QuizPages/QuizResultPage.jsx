@@ -170,20 +170,20 @@ const QuizResultPage = () => {
   const getPerformanceData = (accuracy) => {
     if (accuracy >= 80) {
       return {
-        title: "Outstanding Performance 🚀",
+        title: "Outstanding Performance",
         subtitle: "You're mastering this topic.",
       };
     }
 
     if (accuracy >= 50) {
       return {
-        title: "Good Progress 📈",
+        title: "Good Progress",
         subtitle: "A few concepts still need reinforcement.",
       };
     }
 
     return {
-      title: "Keep Going 💪",
+      title: "Keep Going",
       subtitle: "This attempt revealed exactly what to improve.",
     };
   };
