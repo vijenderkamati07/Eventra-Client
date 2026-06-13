@@ -60,3 +60,44 @@ export async function postGenerateAdpativeQuiz(form) {
     return { success: false, errors: ["Server error. Try again later."] };
   }
 };
+
+export async function postSaveAdaptiveDraft(form) {
+  try {
+    const res = await fetch(`${API_BASE}/api/adaptive-learning/save/draft`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(form),
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      return { success: false, errors: data.errors || ["Adaptive Eligibilty find failed"] };
+    }
+
+    return { success: true, message: data.message, data: data.data };
+  } catch {
+    return { success: false, errors: ["Server error. Try again later."] };
+  }
+};
+
+export async function getAdaptiveDraftQuiz(quizId) {
+  try {
+    const res = await fetch(`${API_BASE}/api/get/draft/quiz/${quizId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      return { success: false, errors: data.errors || ["Adaptive Eligibilty find failed"] };
+    }
+
+    return { success: true, message: data.message, data: data.data };
+  } catch {
+    return { success: false, errors: ["Server error. Try again later."] };
+  }
+};

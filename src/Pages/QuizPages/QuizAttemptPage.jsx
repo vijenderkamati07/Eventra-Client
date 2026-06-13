@@ -122,6 +122,7 @@ const QuizAttemptPage = () => {
       Math.ceil(timeLeft / 60);
 
     return {
+      quizId: quiz._id,
       topic: quiz.topic,
 
       timeLimit: totalTime,

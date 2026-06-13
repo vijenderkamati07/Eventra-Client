@@ -60,13 +60,13 @@ export async function getOneQuiz(quizId) {
   }
 };
 
-export async function submitQuiz(quizId, form) {
+export async function submitQuiz(form) {
   try {
-    const res = await fetch(`${API_BASE}/api/quizzes/${quizId}/submit`, {
+    const res = await fetch(`${API_BASE}/api/quizzes/submit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: form
+      body: JSON.stringify(form)
     });
 
     const data = await res.json();

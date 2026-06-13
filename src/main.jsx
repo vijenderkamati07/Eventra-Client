@@ -20,6 +20,7 @@ import QuizResultPage from "./Pages/QuizPages/QuizResultPage";
 import HistoryPage from "./Pages/History/HistoryPage";
 import AdaptivePracticePage from "./Pages/AdaptiveLearning/AdaptivePracticePage";
 import AdaptiveSubjectDetailPage from "./Pages/AdaptiveLearning/AdaptiveSubjectDetailPage";
+import AdaptiveAttemptPage from "./Pages/AdaptiveLearning/AdaptiveAttemptPage";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "/adaptive-learning/:slug",
         element: <AdaptiveSubjectDetailPage />,
+      },
+      {
+        path: "/adaptive-attempt/:quizId",
+        element: <AdaptiveAttemptPage />,
       },
       
     ],
