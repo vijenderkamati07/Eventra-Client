@@ -1,20 +1,25 @@
 
-const SubmitModal = ({
+const ResumeDraftModal = ({
   isOpen,
-  answeredCount,
-  unansweredCount,
-  totalQuestions,
-  timeLeft,
-  isSubmitting,
-  onClose,
-  onSubmit,
+  draftData,
+  onResume,
+  onStartFresh,
 }) => {
-  if (!isOpen) {
+  if (!isOpen || !draftData) {
     return null;
   }
 
+  const answeredCount =
+    draftData.attemptedQuestionWithAnswers.filter(
+      (item) =>
+        item?.answer !== undefined &&
+        item?.answer !== null
+    ).length;
+
   const totalSeconds = Math.max(
-    Math.floor(timeLeft * 60),
+    Math.floor(
+      draftData.remainingTime * 60
+    ),
     0
   );
 
@@ -31,15 +36,15 @@ const SubmitModal = ({
       <div className="w-full max-w-md rounded-[32px] border border-white/[0.06] bg-[#0C0D0F] p-8">
 
         <p className="text-xs uppercase tracking-wide text-[#8A8F98]">
-          Submit Assessment
+          Resume Assessment
         </p>
 
         <h2 className="mt-2 text-2xl font-semibold text-white">
-          Ready to submit?
+          Continue where you left off?
         </h2>
 
         <p className="mt-3 text-sm text-[#8A8F98] leading-6">
-          Review your progress before submitting.
+          We found a saved practice assessment.
         </p>
 
 
@@ -53,7 +58,7 @@ const SubmitModal = ({
 
             <span className="font-medium text-white">
               {answeredCount}/
-              {totalQuestions}
+              {draftData.totalQuestion}
             </span>
 
           </div>
@@ -62,11 +67,12 @@ const SubmitModal = ({
           <div className="flex justify-between">
 
             <span className="text-[#8A8F98]">
-              Remaining
+              Resume From
             </span>
 
             <span className="font-medium text-white">
-              {unansweredCount}
+              Question{" "}
+              {draftData.currentQuestionIndex + 1}
             </span>
 
           </div>
@@ -88,31 +94,11 @@ const SubmitModal = ({
         </div>
 
 
-        {unansweredCount > 0 && (
-          <div className="mt-6 rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4">
-
-            <p className="text-sm text-amber-300 leading-6">
-              You still have{" "}
-              <span className="font-medium">
-                {unansweredCount}
-              </span>{" "}
-              unanswered question
-              {unansweredCount > 1
-                ? "s"
-                : ""}
-              . You can review them before submitting.
-            </p>
-
-          </div>
-        )}
-
-
         <div className="mt-10 flex flex-col sm:flex-row gap-3">
 
           <button
             type="button"
-            onClick={onClose}
-            disabled={isSubmitting}
+            onClick={onStartFresh}
             className="
               flex-1
               px-4 py-3
@@ -123,19 +109,16 @@ const SubmitModal = ({
               hover:bg-white/[0.03]
               hover:-translate-y-1
               transition-all duration-300
-              disabled:opacity-50
-              disabled:cursor-not-allowed
               cursor-pointer
             "
           >
-            Review Questions
+            Start Over
           </button>
 
 
           <button
             type="button"
-            onClick={onSubmit}
-            disabled={isSubmitting}
+            onClick={onResume}
             className="
               flex-1
               px-4 py-3
@@ -146,14 +129,10 @@ const SubmitModal = ({
               hover:opacity-90
               hover:-translate-y-1
               transition-all duration-300
-              disabled:opacity-50
-              disabled:cursor-not-allowed
               cursor-pointer
             "
           >
-            {isSubmitting
-              ? "Submitting..."
-              : "Submit Anyway"}
+            Resume Assessment
           </button>
 
         </div>
@@ -164,4 +143,5 @@ const SubmitModal = ({
   );
 };
 
-export default SubmitModal;
+export default ResumeDraftModal;
+
