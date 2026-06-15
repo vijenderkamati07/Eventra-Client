@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../../Context/AuthContext";
-import { getAdaptiveEligibleSubjects } from "../../Services/adaptiveService"
+import { getAdaptiveEligibleSubjects } from "../../Services/adaptiveService";
 
 import AdaptiveHowItWorks from "../../Components/AdaptiveLearningComponent/AdaptiveHowItWorks";
 import AdaptiveRequirementsBenefits from "../../Components/AdaptiveLearningComponent/AdaptiveRequirements";
